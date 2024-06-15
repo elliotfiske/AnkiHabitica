@@ -647,19 +647,19 @@ def score_backlog(silent=False):
             ah.log.debug("%s points to score" % numScores)
         progressLabel = "Scoring %s point%s to Habitica" % (
             numScores, "" if numScores == 0 else "s")
-        mw.progress.start(max=numScores, label=progressLabel)
+        # mw.progress.start(max=numScores, label=progressLabel)
         while i <= 25 and ah.config[ah.settings.profile]['score'] >= ah.user_settings["sched"] and ah.settings.internet:
             try:
                 ah.habitica.silent_earn_points()
                 ah.config[ah.settings.profile]['score'] -= ah.user_settings["sched"]
                 i += 1
                 p += 1
-                mw.progress.update()
+                # mw.progress.update()
             except urllib.error.HTTPError as e:
                 if e.code == 429:
                     break
                 i += 1
-        mw.progress.finish()
+        # mw.progress.finish()
         tip_text = "%s point%s scored on Habitica%s" % (p, "" if p == 1 else "s",
             "" if ah.config[ah.settings.profile]['score'] == 0 else ", and ignore the remaining beacuse of Habitica limit")
         if not silent:
