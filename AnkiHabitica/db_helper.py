@@ -162,12 +162,12 @@ def decks_count(start_date):
         # get list of number of cards due for deck each day
         cardsDue = [(-nDays, mw.col.db.scalar("""
             select
-            count()
+            count(*)
             from cards where
             queue in (2,3) and
             did = ? and
             due <= ?
-            """, (d['id'], mw.col.sched.today-nDays))) for nDays in range(numDays)]
+            """, d['id'], mw.col.sched.today-nDays)) for nDays in range(numDays)]
         # get list of number of cards reviewed for deck each day
         cardsDone = mw.col.db.all("""
             select
@@ -182,7 +182,7 @@ def decks_count(start_date):
                 from cards where
                 did = ?
                 """, d['id'])]),
-            (mw.col.sched.dayCutoff, start_date))
+            mw.col.sched.dayCutoff, start_date)
         '''
         The db.all() call above only returns data for days that have >= 1 completed review,
         so there is not in general a one-to-one corresponce between cardsDue and cardsDone
